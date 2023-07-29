@@ -3,6 +3,7 @@ package org.tao.com.TaskManagement.service;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.tao.com.TaskManagement.dto.TaskResponse;
 import org.tao.com.TaskManagement.exception.ResourceNotFoundException;
 import org.tao.com.TaskManagement.model.Tasks;
@@ -42,7 +43,7 @@ public class TaskManagementServiceImpl implements TaskManagementService{
             task.setDescription(tasks.getDescription());
             task.setStatus(tasks.getStatus());
             task.setDueDate(tasks.getDueDate());
-            if(tasks.getStatus().equalsIgnoreCase("completed")){
+            if(!ObjectUtils.isEmpty(task.getStatus()) &&tasks.getStatus().equalsIgnoreCase("completed")){
                 task.setCompletedDate(LocalDate.now().toString());
             }
             Tasks taskDetails = taskManagementRepository.save(task);
@@ -137,7 +138,7 @@ public class TaskManagementServiceImpl implements TaskManagementService{
     public List<TaskResponse> getTasksByGivenDateRange(String startDate, String endDate) {
         List<TaskResponse> list = new ArrayList<>();
         List<Tasks> tasksList = taskManagementRepository.getAllTasksByDateRange(startDate, endDate);
-        tasksList.stream().filter(li-> li.getStatus().equalsIgnoreCase(COMPLETED_STATUS)).forEach(li->{
+        tasksList.stream().filter(li-> !ObjectUtils.isEmpty(li.getStatus())).filter(li-> li.getStatus().equalsIgnoreCase(COMPLETED_STATUS)).forEach(li->{
             TaskResponse taskResponse = new TaskResponse();
             BeanUtils.copyProperties(li,taskResponse);
             list.add(taskResponse);
