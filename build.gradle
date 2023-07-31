@@ -23,8 +23,8 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	annotationProcessor('org.projectlombok:lombok')
 	implementation('org.springframework.boot:spring-boot-starter-validation')
-	testImplementation('org.mockito:mockito-junit-jupiter:4.8.0')
-	testImplementation('org.junit.jupiter:junit-jupiter-engine:5.8.0')
+	testCompileOnly('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+	testCompileOnly('org.mockito:mockito-junit-jupiter:2.23.0')
 
 
 }
